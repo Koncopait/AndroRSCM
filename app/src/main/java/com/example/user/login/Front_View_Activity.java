@@ -34,7 +34,7 @@ public class Front_View_Activity extends Activity {
             @Override
             public void onClick(View v) {
 
-                Intent register = new Intent(Front_View_Activity.this, HomeActivity.class);
+                Intent register = new Intent(Front_View_Activity.this, RegisterActivity.class);
                 startActivity(register);
             }
         });

@@ -27,7 +27,11 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".ForgetPasswordActivity" />
         <activity android:name=".LoginWithPin_Activity" />
-        <activity android:name=".Front_View_Activity"></activity>
+        <activity android:name=".Front_View_Activity"/>
+        <activity android:name=".RegisterActivity">
+        </activity>
+
+
     </application>
 
 </manifest>
