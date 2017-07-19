@@ -1,13 +1,8 @@
 package com.example.user.login;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import android.app.AlertDialog;
 import android.app.Activity;
@@ -15,8 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.DocumentsContract;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,7 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import  com.example.user.login.Helper.url_link;
 
-import java.io.StringReader;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -37,17 +31,10 @@ import java.io.OutputStreamWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.Map;
+
 
 import android.widget.TextView;
 import android.widget.Toast;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import okhttp3.Route;
-
 
 public class LoginActivity extends Activity  {
 
@@ -101,9 +88,9 @@ public class LoginActivity extends Activity  {
                     msg.setGravity(Gravity.CENTER, msg.getXOffset() / 2, msg.getYOffset() / 2);
                     msg.show();
                 }else{
-                new Masuk().execute(type, username, password);
+                    new Masuk().execute(type, username, password);
                 }
-                }
+            }
         });
     }
 
@@ -169,7 +156,8 @@ public class LoginActivity extends Activity  {
             pDialog.dismiss();
             JSONObject jsonObj = null;
             String reason="";
-
+            String token = "";
+            String first ="";
 
             int status=100;
             try
@@ -181,6 +169,12 @@ public class LoginActivity extends Activity  {
                 status = MedMasterUser.getInt("status");
                 reason = MedMasterUser.getString("reason");
 
+                if (status == 0){
+                    token = MedMasterUser.getString("token");
+                    first = MedMasterUser.getString("firstname");
+                }else{
+                    token = null;
+                }
             }
             catch (JSONException e)
             {
@@ -192,12 +186,15 @@ public class LoginActivity extends Activity  {
                 alertDialog.show();
             }else if (status == 0){
                 Intent Home = new Intent(LoginActivity.this, HomeActivity.class);
-
                 alertDialog.setMessage(jsonObj.toString());
                 alertDialog.show();
-              //  alertDialog.dismiss();
-               // finish();
-               // startActivity(Home);
+                alertDialog.dismiss();
+                Bundle b = new Bundle();
+                b.putString("token", token);
+                b.putString("username", first);
+                Home.putExtras(b);
+                finish();
+                startActivity(Home);
 
             }
         }
