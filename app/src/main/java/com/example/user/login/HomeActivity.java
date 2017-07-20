@@ -7,10 +7,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.user.login.Helper.UserSessionManager;
+
+import java.util.HashMap;
+
+
 public class HomeActivity extends Activity {
     TextView nama, username;
     String get_nama;
     String get_username;
+    UserSessionManager session;
     /**
      * Called when the activity is first created.
      */
@@ -18,21 +24,26 @@ public class HomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
         nama = (TextView) findViewById(R.id.hore);
-        username = (TextView) findViewById(R.id.username);
-        Bundle b = getIntent().getExtras();
+        session = new UserSessionManager(getApplicationContext());
 
-        get_nama = b.getString("token");
-        get_username = b.getString("username");
-        nama.setText("Nama : "+get_nama);
-        username.setText("First Name : "+get_username);
+
+
+
+        if(session.checkLogin())
+            finish();
+        HashMap<String, String> user = session.getUserDetails();
+
+
+
+        nama.setText("Nama : "+user.get(UserSessionManager.KEY_USERNAME)+" "+user.get(UserSessionManager.KEY_PASSWORD)+" "+user.get(UserSessionManager.KEY_TOKEN));
+
+
 
 
         Button next = (Button) findViewById(R.id.Button02);
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
-                finish();
+                session.logoutUser();
             }
 
         });

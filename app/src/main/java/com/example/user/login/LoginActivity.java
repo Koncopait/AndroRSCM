@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.user.login.Helper.UserSessionManager;
 import  com.example.user.login.Helper.url_link;
 
 
@@ -35,18 +37,21 @@ import java.io.IOException;
 
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.user.login.Helper.token_check;
 
 public class LoginActivity extends Activity  {
-
+    token_check token_check = new token_check();
     Button login;
     TextView forgot_pass, login_withpin;
     EditText username_et, password_et;
+    String username,password;
+    UserSessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        session = new UserSessionManager(getApplicationContext());
         login = (Button) findViewById(R.id.b_login);
         forgot_pass = (TextView) findViewById(R.id.forgot_pass);
         login_withpin = (TextView) findViewById(R.id.login_withpin);
@@ -76,8 +81,8 @@ public class LoginActivity extends Activity  {
 
             @Override
             public void onClick(View v) {
-                String username = username_et.getText().toString();
-                String password = password_et.getText().toString();
+                username = username_et.getText().toString();
+                password = password_et.getText().toString();
                 String type = "login";
                 if (TextUtils.isEmpty(username)) {
                     Toast msg = Toast.makeText(LoginActivity.this, "Username is Empty.", Toast.LENGTH_LONG);
@@ -157,7 +162,6 @@ public class LoginActivity extends Activity  {
             JSONObject jsonObj = null;
             String reason="";
             String token = "";
-            String first ="";
 
             int status=100;
             try
@@ -171,7 +175,6 @@ public class LoginActivity extends Activity  {
 
                 if (status == 0){
                     token = MedMasterUser.getString("token");
-                    first = MedMasterUser.getString("firstname");
                 }else{
                     token = null;
                 }
@@ -191,8 +194,8 @@ public class LoginActivity extends Activity  {
                 alertDialog.dismiss();
                 Bundle b = new Bundle();
                 b.putString("token", token);
-                b.putString("username", first);
                 Home.putExtras(b);
+                session.createUserLoginSession(token,username,password);
                 finish();
                 startActivity(Home);
 

@@ -18,13 +18,15 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Splashscreen">
+
+        </activity>
+        <activity
+            android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".HomeActivity" />
+            </activity>
         <activity android:name=".ForgetPasswordActivity" />
         <activity android:name=".LoginWithPin_Activity" />
         <activity android:name=".Front_View_Activity"/>
